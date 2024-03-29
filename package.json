@@ -1,0 +1,62 @@
+{
+	"id": "noahyoung-hx-swap-name",
+	"name": "hx-swap-name",
+	"description": "交换两个文件（夹）的命名",
+	"displayName": "交换命名",
+	"version": "0.0.0",
+	"publisher": "your name",
+	"engines": {
+		"HBuilderX": "^2.7.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"keywords": [
+		"重命名",
+		"交换"
+	],
+    "scripts": {
+    	"pack": "node hx-pack.js"
+    },
+	"main": "./extension",
+	"activationEvents": [
+		"onCommand:extension.swapName"
+	],
+	"contributes": {
+		"commands": [
+			{
+				"command": "extension.swapName",
+				"title": "交换命名"
+			}
+		],
+		"menus": {
+			"explorer/context": [
+				{
+					"command": "extension.swapName",
+					"group": "z_commands",
+					"when": "workspaceRelativePath"
+				},
+				{
+					"group": "z_commands"
+				}
+			]
+		},
+		"configuration": {
+			"title": "🦄交换命名",
+			"properties": {
+				"noahyoung-hx-swap-name.promptBeforeSwap": {
+					"type": "boolean",
+					"default": true,
+					"description": "操作前进行确认"
+				}
+			}
+		}
+	},
+	"extensionDependencies": [
+		"plugin-manager"
+	],
+	"dependencies": {
+		"cozip": "^0.1.0",
+		"uuid": "^9.0.1"
+	}
+}
