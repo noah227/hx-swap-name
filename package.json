@@ -34,7 +34,7 @@
 				{
 					"command": "extension.swapName",
 					"group": "z_commands",
-					"when": "workspaceRelativePath"
+					"when": "explorerResourceCount == 2"
 				},
 				{
 					"group": "z_commands"
