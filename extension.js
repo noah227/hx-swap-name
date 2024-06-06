@@ -18,10 +18,14 @@ const renameFile = (cwd, oldName, newName) => {
     ) 
 }
 
+/**
+ * @param {String} basename
+ */
 const getMainPart = (basename) => {
+    // 包含了以.开头命名的文件判定
     if (basename.indexOf(".") <= 0) return basename
     else {
-        return basename.split(".").reverse().slice(1).join("")
+        return basename.split(".").reverse().slice(1).reverse().join(".")
     }
 }
 
@@ -31,18 +35,19 @@ const createNewName = (nameMainPart, nameExt) => {
 
 const getIfCanSwap = (p1, p2) => new Promise((resolve, reject) => {
     let errMsg = ""
+    const errTail = "详见<a href='https://github.com/noah227/hx-swap-name?tab=readme-ov-file#使用限制' style='margin-left: 86px;'>使用限制</a>"
     // 同类交换限定判定
     if(fs.statSync(p1).isDirectory() ^ fs.statSync(p2).isDirectory()) {
         errMsg = "不支持文件夹与文件名称交换！"
     }
     else {
-        // 文件名称限制必须包含扩展名
-        if(!fs.statSync(p1).isDirectory()) {
-            const simpleReg = /\w+\.\w+/
-            if(!(simpleReg.test(p1) && simpleReg.test(p2))) errMsg = "文件名称限制必须包含扩展名！"
+        const n1 = path.basename(p1), n2 = path.basename(p2)
+        if(n1.startsWith(".") ^ n2.startsWith(".")) {
+            const tagB = "<b style=''>.</b>"
+            errMsg = `${tagB} 开头文件只能与 ${tagB} 开头文件的文件进行名称交换！`
         }
     }
-    if(errMsg) hx.window.setStatusBarMessage(errMsg, 5000, "error")
+    if(errMsg) hx.window.setStatusBarMessage("<strong>条件限制：</strong>" + errMsg + errTail, 8000, "error")
     else resolve(true)
 })
 
