@@ -1,4 +1,6 @@
 var hx = require("hbuilderx");
+const fs = require("fs");
+const path = require("path")
 const {
     execSync
 } = require("child_process")
@@ -10,12 +12,10 @@ const uuid = require("uuid");
  * @param {string} newName 新名词
  */
 const renameFile = (cwd, oldName, newName) => {
-    const cmd = `rename ${oldName} ${newName}`
-    execSync("chcp 65001")
-    execSync(cmd, {
-        cwd,
-        encoding: "utf8"
-    })
+    fs.renameSync(
+        path.resolve(cwd, oldName),
+        path.resolve(cwd, newName)
+    ) 
 }
 
 const getMainPart = (basename) => {
@@ -36,8 +36,7 @@ const needPrompt = () => {
 //该方法将在插件激活的时候调用
 function activate(context) {
     let disposable = hx.commands.registerCommand('extension.swapName', (ctx) => {
-        const cwd = ctx[0].workspaceFolder.uri.fsPath
-        const path = require("path")
+        const cwd = ctx[0].workspaceFolder.uri.fsPath 
         const fsPathList = ctx.map(item => item.fsPath)
         const [f1, f2] = fsPathList
         
